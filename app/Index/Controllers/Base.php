@@ -9,12 +9,16 @@
  * @description 应用的基类
  */
 
-namespace App;
+namespace App\Index;
 
 class Base
 {
-    public function test()
+    public function test($a, $b)
     {
-        echo 'testing';
+        echo '第一个参数:'.$a . '第二个参数：' .$b;
+    }
+    public function hello()
+    {
+        echo 'hello';
     }
 }

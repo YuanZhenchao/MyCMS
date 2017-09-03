@@ -33,8 +33,8 @@ class AutoLoads
         $strRootSpaceName = strtolower($arrClassName[0]);
         if ($strRootSpaceName == 'app'){
             //项目的类
-            $arrClassName[0] = __ROOT__ . DS .$strRootSpaceName . DS .'Controllers';
-            $arrClassName[1] = $arrClassName[1] .$strRootSpaceName . DS .'Controllers';
+            $arrClassName[0] = __ROOT__ . DS .$strRootSpaceName;
+            $arrClassName[1] = $arrClassName[1] . DS .'Controllers';
         } else {
             //框架的类
             $arrClassName[0] = __ROOT__ . DS .$strRootSpaceName;
