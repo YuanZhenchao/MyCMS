@@ -6,11 +6,12 @@
 /**
  * SmithCMS
  * @author 城东苑铁匠 yuanzhenchao@aliyun.com
- * @description 基础类
+ * @athers 栏目的模型类
  */
 
-namespace App\Index\Controllers;
+namespace App\Index\Models;
 
-class Base extends \Core\Lib\Base
+class Columns
 {
+
 }

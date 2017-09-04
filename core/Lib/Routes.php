@@ -13,20 +13,19 @@ namespace Core\Lib;
 
 class Routes
 {
+    //模块和方法
+    public static $strModel;
+    public static $strClass;
+    public static $strMVC;
+    public static $strFunction;
+
     public function __construct()
     {
-        //静态方法运行不调用
-    }
-
-    /*
-     * 通过解析url 加载项目文件
-     */
-    public static function routes()
-    {
         //模块和方法
-        $strModel = CONFIGS['core']['DEFAULT_MODULE'];
-        $strClass = CONFIGS['core']['DEFAULT_CLASS'];
-        $strFunction = CONFIGS['core']['DEFAULT_FUNCTION'];
+        self::$strModel = CONFIGS['core']['DEFAULT_MODULE'];
+        self::$strMVC = CONFIGS['core']['DEFAULT_MVC'];
+        self::$strClass = CONFIGS['core']['DEFAULT_CLASS'];
+        self::$strFunction = CONFIGS['core']['DEFAULT_FUNCTION'];
 
         //显示的错误信息
         $strMsg = '';
@@ -37,37 +36,33 @@ class Routes
             $arrUrls = explode('/', substr($_SERVER['REQUEST_URI'],1));
 
             //后肯定有模块参数 无需判断
-            $strModel = ucfirst($arrUrls[0]);
+            self::$strModel = ucfirst($arrUrls[0]);
             unset($arrUrls[0]);//之后指针方便读取
 
-            //如果参数中有类名
+            //如果参数中有类名self::$strMVC
             if (isset($arrUrls[1]) && !empty($arrUrls[1])){
-                $strClass = ucfirst($arrUrls[1]);
+                self::$strClass = ucfirst($arrUrls[1]);
                 unset($arrUrls[1]);
-            } else {
-                $strMsg = '没有类参数';
             }
 
             //如果参数中有方法名
             if (isset($arrUrls[2]) && !empty($arrUrls[2])){
-                $strFunction = strtolower($arrUrls[2]);
+                self::$strFunction = strtolower($arrUrls[2]);
                 unset($arrUrls[2]);
-            } else {
-                $strMsg = '没有方法参数';
             }
         }
 
         //判断有没有该类文件
-        $resourceFile = __APP__ . DS . $strModel . DS . 'Controllers' . DS . $strClass . '.php';
+        $resourceFile = __APP__ . DS . self::$strModel . DS . 'Controllers' . DS . self::$strClass . '.php';
         //实现参数的传入 如果有参数
         if (is_file($resourceFile)){
             //如果有该文件 实例化方法
-            $strNewModelName = '\\App\\' . $strModel . '\\' . $strClass;
+            $strNewModelName = '\\App\\' . self::$strModel . '\\Controllers\\' . self::$strClass;
             $modelNewModel = new $strNewModelName();
 
             //判断方法是有合法
-            if (!method_exists($modelNewModel, $strFunction)){
-                $strMsg = (CONFIGS['core']['DEVELOPER']) ? '没有方法：' . $strFunction : '不好意思你的网址打错了';
+            if (!method_exists($modelNewModel, self::$strFunction)){
+                $strMsg = (CONFIGS['core']['DEVELOPER']) ? '没有方法：' . self::$strFunction : '不好意思你的网址打错了';
                 echo $strMsg;
                 die;
             }
@@ -79,11 +74,13 @@ class Routes
                     next($arrUrls);
                 }
                 //把数组参数 作为回调函数的参数
-                call_user_func_array([$modelNewModel, $strFunction], $arrUrls);
+                call_user_func_array([$modelNewModel, self::$strFunction], $arrUrls);
             } else {
+                $strFunction = self::$strFunction;
                 $modelNewModel->$strFunction();
             }
         } else {
+            //报错
             $strMsg = (CONFIGS['core']['DEVELOPER']) ? '没有文件：' . $resourceFile : '不好意思你的网址打错了';
             echo $strMsg;
             die;

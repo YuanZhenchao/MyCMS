@@ -10,4 +10,4 @@ require realpath('../') . DS . 'configs' . DS . 'constant.php';
 //引入框架的核心文件
 require __CORE__ . DS . 'cores.php';
 //运行路由
-\Core\Lib\Routes::routes();
+$modeRoute = new \Core\Lib\Routes();

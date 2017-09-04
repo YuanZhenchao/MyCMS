@@ -28,21 +28,9 @@ class AutoLoads
             return true;
         }
 
-        //判断实例化的类 是框架的还是项目的
-        $arrClassName = explode('\\', $class);
-        $strRootSpaceName = strtolower($arrClassName[0]);
-        if ($strRootSpaceName == 'app'){
-            //项目的类
-            $arrClassName[0] = __ROOT__ . DS .$strRootSpaceName;
-            $arrClassName[1] = $arrClassName[1] . DS .'Controllers';
-        } else {
-            //框架的类
-            $arrClassName[0] = __ROOT__ . DS .$strRootSpaceName;
-            $arrClassName[1] = strtolower($arrClassName[1]);
-        }
-
         //拼接引入文件的路径
-        $file = implode(DS, $arrClassName).'.php';
+        $arrClassName = str_replace('\\', DS, $class);
+        $file = __ROOT__ . DS .lcfirst($arrClassName) . '.php';
 
         //引入文件
         if (is_file($file)){

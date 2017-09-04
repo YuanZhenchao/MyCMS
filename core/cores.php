@@ -6,7 +6,7 @@
  */
 
 //引入自动加载类
-require __CORE__ . DS . 'lib' . DS  . 'AutoLoads.php';
+require __CORE__ . DS . 'Lib' . DS  . 'AutoLoads.php';
 //引入公共函数库
 require __CORE__ . DS . 'common' . DS  . 'functions.php';
 //引入框架运行设置
